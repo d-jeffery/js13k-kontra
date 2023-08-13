@@ -17,12 +17,12 @@ export default {
         format: 'cjs',
     },
     plugins: [typescript(),
-        kontra({
-            gameObject: {
-                velocity: true,
-            },
-            debug: true
-        }),
+        // kontra({
+        //     gameObject: {
+        //         group: true,
+        //     },
+        //     debug: true
+        // }),
         nodeResolve(),
         terser(),]
 };

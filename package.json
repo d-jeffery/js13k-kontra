@@ -7,7 +7,7 @@
   "scripts": {
     "build": "rollup -c ./rollup.config.js",
     "prod": "npm run build && npm run gcc && npm run roadroller",
-    "gcc": "google-closure-compiler --js=dist/index.js --js_output_file=dist/index.prod.js --compilation_level=ADVANCED --language_out=ECMASCRIPT_2021 --warning_level=VERBOSE --jscomp_off=* --assume_function_wrapper",
+    "gcc": "google-closure-compiler --js=dist/index.js --js_output_file=dist/index.prod.js --compilation_level=SIMPLE --language_out=ECMASCRIPT_2021 --warning_level=VERBOSE --jscomp_off=* --assume_function_wrapper",
     "roadroller": "roadroller dist/index.prod.js -o dist/index.prod.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
