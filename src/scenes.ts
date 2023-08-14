@@ -1,5 +1,6 @@
 import { Button, emit, Grid, init, Scene, Text, track } from 'kontra'
-
+import { CPlayer } from './player-small'
+import { introMusic } from './music'
 const { canvas } = init()
 
 export const introScene = Scene({
@@ -101,6 +102,62 @@ export const introScene = Scene({
 })
 
 export const menuScene = Scene({
-  id: 'menu'
+  id: 'menu',
+  player: new CPlayer(),
 
+  onShow () {
+    this.player.init(introMusic)
+
+    let done = false
+
+    while (!done) {
+      done = this.player.generate() >= 1
+      console.log('Not done')
+    }
+    const wave = this.player.createWave()
+    const audio = document.createElement('audio')
+    audio.src = URL.createObjectURL(new Blob([wave], { type: 'audio/wav' }))
+    audio.loop = true
+
+    audio.play().catch((e) => {
+      console.error('Unable to play music!', e)
+    })
+
+    const textOptions = {
+      color: 'black',
+      font: '20px Arial, sans-serif',
+      onOver: function () {
+        this.color = 'purple'
+      },
+      onOut: function () {
+        this.color = 'black'
+      }
+    }
+
+    const menuTitle = Text({
+      text: 'Eeeeeyyyyy, it\'s a fuck\'n game',
+      ...textOptions
+    })
+
+    const title = Text({
+      text: 'ABOUT HISTORY SHIT',
+      ...textOptions
+    })
+
+    const menu = Grid({
+      x: 300,
+      y: 100,
+      anchor: { x: 0.5, y: 0.5 },
+
+      // add 15 pixels of space between each row
+      rowGap: 15,
+
+      // center the children
+      justify: 'center',
+
+      children: [menuTitle, title]
+    })
+
+    this.objects = [menu]
+  }
 })
