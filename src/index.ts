@@ -1,7 +1,5 @@
 import { initPointer, GameLoop, Scene, on } from 'kontra'
-import { introScene } from './scenes'
-
-//
+import { introScene } from './scenes/intro'
 
 // must call this to have pointer events work
 initPointer()
