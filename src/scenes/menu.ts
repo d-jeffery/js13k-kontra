@@ -12,7 +12,6 @@ export const menuScene = Scene({
     onHide () {
         this.audio.pause()
     },
-
     onShow () {
         this.cPlayer.init(introMusic)
 

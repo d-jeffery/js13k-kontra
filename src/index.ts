@@ -8,6 +8,7 @@ let currentScene: Scene = introScene
 
 on('changeScene', (scene: Scene) => {
   currentScene.hide()
+  currentScene.destroy()
   currentScene = scene
   currentScene.show()
 })

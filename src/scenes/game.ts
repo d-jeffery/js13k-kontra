@@ -1,7 +1,8 @@
-import {Scene} from "kontra";
+import {initPointer, Scene} from "kontra";
 import {CPlayer} from "../player-small";
 import {gameSong} from "../music";
 import {player} from "../actors/player";
+import {sky} from "../actors/sky";
 
 export const gameScene = Scene({
     id: 'game',
@@ -11,7 +12,6 @@ export const gameScene = Scene({
     onHide () {
         this.audio.pause()
     },
-
     onShow () {
         this.cPlayer.init(gameSong)
 
@@ -31,6 +31,6 @@ export const gameScene = Scene({
             console.error('Unable to play music!', e)
         })
 
-        this.objects = [player]
+        this.objects = [sky, player]
     }
 });
