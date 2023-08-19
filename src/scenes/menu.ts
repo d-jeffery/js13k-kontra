@@ -6,7 +6,7 @@ const { canvas } = init()
 
 export const menuScene = Scene({
     id: 'menu',
-    player: new CPlayer(),
+    cPlayer: new CPlayer(),
     audio: undefined,
 
     onHide () {
@@ -14,15 +14,15 @@ export const menuScene = Scene({
     },
 
     onShow () {
-        this.player.init(introMusic)
+        this.cPlayer.init(introMusic)
 
         let done = false
 
         while (!done) {
-            done = this.player.generate() >= 1
+            done = this.cPlayer.generate() >= 1
             console.log('Not done')
         }
-        const wave = this.player.createWave()
+        const wave = this.cPlayer.createWave()
         this.audio = document.createElement('audio')
         this.audio.src = URL.createObjectURL(new Blob([wave], { type: 'audio/wav' }))
         this.audio.loop = true
