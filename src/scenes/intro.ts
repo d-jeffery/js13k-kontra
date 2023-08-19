@@ -8,7 +8,7 @@ export const introScene = Scene({
   onShow () {
     const textOptions = {
       color: 'black',
-      font: '20px Arial, sans-serif',
+      font: '32px Arial, sans-serif',
       onOver: function () {
         this.color = 'purple'
       },
@@ -43,7 +43,7 @@ export const introScene = Scene({
       text: {
         text: 'Click to Begin!',
         color: 'red',
-        font: '20px Arial, sans-serif',
+        font: '32px Arial, sans-serif',
         anchor: { x: 0.5, y: 0.5 }
       },
       padX: 20,
@@ -81,8 +81,8 @@ export const introScene = Scene({
     })
 
     const intro = Grid({
-      x: 300,
-      y: 100,
+      x: 360,
+      y: 640,
       anchor: { x: 0.5, y: 0.5 },
 
       // add 15 pixels of space between each row

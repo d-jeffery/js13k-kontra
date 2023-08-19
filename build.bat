@@ -14,7 +14,7 @@ if %ERRORLEVEL% NEQ 0 (
 )
 
 pushd %BUILD_FOLDER%
-echo ^<canvas width="600" height="600"^>^</canvas^> >> index.html
+echo ^<canvas width="720" height="1280" style="position: absolute; top: 50%%; left: 50%%; transform: translate(-50%%, -50%%); height: 100%%;"^>^</canvas^> >> index.html
 echo ^<script^> >> index.html
 type %BUILD_FILENAME% >> index.html
 echo ^</script^> >> index.html
