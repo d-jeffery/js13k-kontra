@@ -11,5 +11,5 @@ export const sky = Sprite({
     height: context!.canvas.height,
     color: 'LightSkyBlue',
 
-    context: context,
+    context: context
 });
