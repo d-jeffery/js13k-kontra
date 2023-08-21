@@ -4,33 +4,10 @@ import {introMusic} from "../music";
 import {gameScene} from "./game";
 const { canvas } = init()
 
-export const menuScene = Scene({
+export const helpScene = Scene({
     id: 'menu',
-    cPlayer: new CPlayer(),
-    audio: undefined,
 
-    onHide () {
-        this.audio.pause()
-    },
     onShow () {
-        this.cPlayer.init(introMusic)
-
-        let done = false
-
-        while (!done) {
-            done = this.cPlayer.generate() >= 1
-            console.log('Not done')
-        }
-        const wave = this.cPlayer.createWave()
-        this.audio = document.createElement('audio')
-        this.audio.src = URL.createObjectURL(new Blob([wave], { type: 'audio/wav' }))
-        this.audio.loop = true
-
-        // @ts-ignore
-        this.audio.play().catch((e) => {
-            console.error('Unable to play music!', e)
-        })
-
         const textOptions = {
             color: 'black',
             font: '32px Arial, sans-serif',

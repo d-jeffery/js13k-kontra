@@ -28,7 +28,7 @@ export class Firework extends SpriteClass {
             dx: (Math.random() - 0.5) * 2,
             dy: (Math.random() - 0.5) * 2,
         });
-        this.pool.update()
+        this.pool.update(dt)
     }
 
     render() {
