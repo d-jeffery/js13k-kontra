@@ -1,21 +1,28 @@
-import {GameObject, getPointer, pointerPressed, Scene} from "kontra";
-import {CPlayer} from "../player-small";
-import {gameSong} from "../music";
+import {GameObject, getPointer, init, pointerPressed, Scene} from "kontra";
+import {CPlayer} from "../vendor/player-small";
+import BeatBeat from "../vendor/beat-beat-js";
+import {gameSong, introMusic} from "../music";
 import {player} from "../actors/player";
 import {sky} from "../actors/sky";
 import {Firework} from "../actors/firework";
+
+const {context} = init()
 
 export const gameScene = Scene({
     id: 'game',
     cPlayer: new CPlayer(),
     audio: undefined,
+    bufferL: undefined,
+    bufferR: undefined,
 
     cullObjects: true,
 
-    onHide () {
+    context: context,
+
+    onHide() {
         this.audio.pause()
     },
-    onShow () {
+    onShow() {
         this.cPlayer.init(gameSong)
 
         let done = false
@@ -27,12 +34,60 @@ export const gameScene = Scene({
         const wave = this.cPlayer.createWave()
         this.audio = document.createElement('audio')
         this.audio.src = URL.createObjectURL(new Blob([wave], {type: 'audio/wav'}))
-        this.audio.loop = true
+        // this.audio.loop = true
 
         // @ts-ignore
-        this.audio.play().catch((e) => {
-            console.error('Unable to play music!', e)
+        // this.audio.play().catch((e) => {
+        //     console.error('Unable to play music!', e)
+        // })
+
+        // const audioCtx = new window.AudioContext;
+        // this.peaks = WebaudioPeaks(this.cPlayer.createAudioBuffer(audioCtx), 10000, false);
+
+        //
+        // audioCtx.decodeAudioData(this.cPlayer.createAudioBuffer(audioCtx), (decodedData) => {
+        //     //calculate peaks from an AudioBuffer
+        //     console.log(WebaudioPeaks(decodedData, 10000, true));
+        // });
+
+        // console.log(this.cPlayer.createAudioBuffer(audioCtx).getChannelData(0));
+        // console.log(extractPeaks(
+
+        const audioCtx = new window.AudioContext()
+        const buffer = this.cPlayer.createAudioBuffer(audioCtx)
+
+
+
+        this.bufferL = new BeatBeat(audioCtx, buffer)
+        //this.bufferR = new BeatBeat(audioCtx, buffer.getChannelData(1).buffer)
+
+        console.log(buffer)
+
+        this.bufferL.load().then(() => {
+            this.bufferL.play(() => {
+                 this.objects!.push(new Firework({x: Math.random() * 1000, y:  Math.random() * 1000}))
+                console.log("BEAT")
+            });
         })
+
+        console.log(this.bufferL)
+
+
+
+        // this.bufferL = extractPeaks(buffer.getChannelData(0), 1000, true)
+        // this.bufferR = extractPeaks(buffer.getChannelData(1), 1000, true)
+        //
+        // console.log(this.bufferL)
+        // console.log(this.bufferR)
+
+        //
+        // for(let i = 0; i < buffer.length; i++) {
+        //     const n = bufferL[i * (1000)]
+        //     context.beginPath();
+        //     context.moveTo(i + 0.5, 700);
+        //     context.lineTo(i + 0.5, 700 + (-n * 800));
+        //     context.stroke();
+        // }
 
         this.objects = [sky, player]
     },
@@ -43,5 +98,50 @@ export const gameScene = Scene({
         }
 
         this.objects?.forEach((o: object) => (o as GameObject).update());
+    },
+    render() {
+
+        this.objects?.forEach((o: object) => (o as GameObject).render());
+
+        //const data = this.cPlayer.getData(this.audio.currentTime, 10000)
+        //console.log(extractPeaks(data[0]));
+        //console.log(extractPeaks(data[1]));
+
+        // const audioCtx = new window.AudioContext()
+        // const buffer = this.cPlayer.createAudioBuffer(audioCtx)
+        // const bufferL = buffer.getChannelData(0)
+        // for(let i = 0; i < buffer.length; i++) {
+        //     const n = bufferL[i * (1000)]
+        //     context.beginPath();
+        //     context.moveTo(i + 0.5, 700);
+        //     context.lineTo(i + 0.5, 700 + (-n * 800));
+        //     context.stroke();
+        // }
+        // https://stackoverflow.com/questions/25836447/generating-a-static-waveform-with-webaudio
+
+        const sampleSize = 10000;
+        const data = this.cPlayer.getData(this.audio.currentTime, sampleSize)
+
+        //console.log(data)
+        // console.log(extractPeaks(new Float32Array(data), 44100, false))
+
+        if (this.context) {
+
+            // Plot left channel.
+            this.context.beginPath();
+            this.context.moveTo(0, 50 + 90 * data[0]);
+            for (let k = 0; k < sampleSize; ++k) {
+                this.context.lineTo(k, 50 + 90 * data[k * 2]);
+            }
+            this.context.stroke();
+
+            // Plot right channel.
+            this.context.beginPath();
+            this.context.moveTo(0, 150 + 90 * data[1]);
+            for (let k = 0; k < sampleSize; ++k) {
+                this.context.lineTo(k, 150 + 90 * data[k * 2 + 1]);
+            }
+            this.context.stroke();
+        }
     }
 });

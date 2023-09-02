@@ -1,6 +1,4 @@
 import {Button, emit, Grid, init, Scene, Text} from "kontra";
-import {CPlayer} from "../player-small";
-import {introMusic} from "../music";
 import {gameScene} from "./game";
 const { canvas } = init()
 

@@ -3,28 +3,22 @@ export default class BeatBeat {
     isPlaying = false
 
     private offlineContext!: OfflineAudioContext
-    private buffer!: AudioBuffer
     private songData: any[] = []
 
     constructor(
         private context: AudioContext,
-        private name: string,
+        private buffer: AudioBuffer,
         private filterFrequency = 100,
         private peakGain = 15,
-        private threshold = 0.8,
+        private threshold = 0.1,
         private sampleSkip = 350,
         private minAnimationTime = 0.4
     ) {}
 
     load() {
         return new Promise<void>(async resolve => {
-            const resp = await fetch(this.name)
-            const file = await resp.arrayBuffer()
-            this.context.decodeAudioData(file, async (buffer) => {
-                this.buffer = buffer
-                await this.analyze()
-                resolve()
-            })
+            await this.analyze()
+            resolve()
         })
     }
 
@@ -38,7 +32,7 @@ export default class BeatBeat {
     }
 
     private async analyze() {
-        this.offlineContext = new OfflineAudioContext(1, this.buffer.length, this.buffer.sampleRate)
+        this.offlineContext = new OfflineAudioContext(this.buffer.numberOfChannels, this.buffer.length, this.buffer.sampleRate)
         const source = this.offlineContext.createBufferSource()
         source.buffer = this.buffer
 
