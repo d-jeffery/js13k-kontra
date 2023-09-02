@@ -1,9 +1,14 @@
+interface SoundData {
+    data: number,
+    time: number
+}
+
 export default class BeatBeat {
 
     isPlaying = false
 
     private offlineContext!: OfflineAudioContext
-    private songData: any[] = []
+    private songData: Record<number, SoundData[]> = []
 
     constructor(
         private context: AudioContext,
@@ -53,32 +58,36 @@ export default class BeatBeat {
         source.start()
         const buffer = await this.offlineContext.startRendering()
 
-        const data = buffer.getChannelData(0)
+        for (let channel = 0; channel < buffer.numberOfChannels; channel++) {
+            const data = buffer.getChannelData(channel)
 
-        this.songData = []
-        for (let i = 0; i < data.length; ++i) {
-            if (data[i] > this.threshold) {
-                const time = i / buffer.sampleRate
-                const previousTime = this.songData.length
-                    ? this.songData[this.songData.length - 1].time
-                    : 0
-                if (time - previousTime > this.minAnimationTime) {
-                    this.songData.push({
-                        data: data[i],
-                        time
-                    })
+            this.songData[channel] = []
+            for (let i = 0; i < data.length; ++i) {
+                if (data[i] > this.threshold) {
+                    const time = i / buffer.sampleRate
+                    const previousTime = this.songData[channel].length
+                        ? this.songData[channel][this.songData[channel].length - 1].time
+                        : 0
+                    if (time - previousTime > this.minAnimationTime) {
+                        this.songData[channel].push({
+                            data: data[i],
+                            time
+                        })
+                    }
                 }
+                i += this.sampleSkip
             }
-            i += this.sampleSkip
         }
     }
 
     private animate(cb: any) {
-        this.songData.forEach((d, i) => {
-            const time = i === this.songData.length - 1
-                ? d.time
-                : this.songData[i + 1].time - d.time
-            setTimeout(() => cb(time), d.time * 1000)
-        })
+        for(let c = 0; c < Object.keys(this.songData).length; c++) {
+            this.songData[c].forEach((d, i) => {
+                const time = i === this.songData[c].length - 1
+                    ? d.time
+                    : this.songData[c][i + 1].time - d.time
+                setTimeout(() => cb(c, time), d.time * 1000)
+            })
+        }
     }
 }

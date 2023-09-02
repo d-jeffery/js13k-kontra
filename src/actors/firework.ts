@@ -4,7 +4,6 @@ const { context } = init()
 export class Firework extends SpriteClass {
     constructor(properties: any) {
         super(properties);
-        console.log(properties)
         this.anchor = {x: 0.5, y: 0.5}
         this.width = 20
         this.height = 20
