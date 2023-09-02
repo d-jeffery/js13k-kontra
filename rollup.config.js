@@ -1,5 +1,6 @@
 // rollup.config.js
 import typescript from '@rollup/plugin-typescript';
+import commonjs from "@rollup/plugin-commonjs";
 import kontra from 'rollup-plugin-kontra'
 import nodeResolve from "@rollup/plugin-node-resolve";
 import terser from "@rollup/plugin-terser";
@@ -24,5 +25,8 @@ export default {
         //     debug: true
         // }),
         nodeResolve(),
+        commonjs({
+           defaultIsModuleExports: true
+        }),
         terser(),]
 };

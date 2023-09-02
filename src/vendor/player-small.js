@@ -314,9 +314,10 @@ export var CPlayer = function() {
     this.getData = function(t, n) {
         var i = 2 * Math.floor(t * 44100);
         var d = new Array(n);
+
         for (var j = 0; j < 2*n; j += 1) {
             var k = i + j;
-            d[j] = t > 0 && k < mMixBuf.length ? mMixBuf[k] / 32768 : 0;
+            d[j] = t >= 0 && k < mMixBuf.length ? mMixBuf[k] / 32768 : 0;
         }
         return d;
     };
