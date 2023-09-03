@@ -124,7 +124,7 @@ export var CPlayer = function() {
         mCurrentCol = 0;
 
         // Prepare song info
-        mNumWords =  song.rowLen * song.patternLen * (mLastRow + 1) * 2;
+        mNumWords =  song.rowLen * song.patternLen * (mLastRow + 1) * song.numChannels;
 
         // Create work buffer (initially cleared)
         mMixBuf = new Int32Array(mNumWords);
@@ -272,8 +272,8 @@ export var CPlayer = function() {
 
     // Create a AudioBuffer from the generated audio data
     this.createAudioBuffer = function(context) {
-        var buffer = context.createBuffer(2, mNumWords / 2, 44100);
-        for (var i = 0; i < 2; i ++) {
+        var buffer = context.createBuffer(mSong.numChannels, mNumWords / mSong.numChannels, 44100);
+        for (var i = 0; i < buffer.numberOfChannels; i++) {
             var data = buffer.getChannelData(i);
             for (var j = i; j < mNumWords; j += 2) {
                 data[j >> 1] = mMixBuf[j] / 65536;

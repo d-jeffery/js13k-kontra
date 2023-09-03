@@ -8,14 +8,17 @@ export class Firework extends SpriteClass {
         this.width = 20
         this.height = 20
         this.color = 'yellow'
+        this.ttl = 120
         this.pool = Pool({
             // @ts-ignore
             create: Sprite,
-            maxSize: 100
+            maxSize: 30
         });
     }
 
     update(dt?: number) {
+        super.update(dt)
+
         this.pool.get({
             x: this.x,
             y: this.y,

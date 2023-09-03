@@ -15,7 +15,8 @@
   "author": "Daniel Jeffery",
   "license": "ISC",
   "dependencies": {
-    "kontra": "^9.0.0"
+    "kontra": "^9.0.0",
+    "mersenne-twister": "^1.1.0"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^25.0.4",

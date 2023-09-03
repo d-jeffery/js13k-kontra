@@ -1,7 +1,7 @@
 import {GameObject, getPointer, init, pointerPressed, Scene} from "kontra";
 import {CPlayer} from "../vendor/player-small";
 import BeatBeat from "../vendor/beat-beat-js";
-import {gameSong, introMusic} from "../music";
+import {gameSong} from "../music";
 import {player} from "../actors/player";
 import {sky} from "../actors/sky";
 import {Firework} from "../actors/firework";
@@ -39,10 +39,8 @@ export const gameScene = Scene({
         // this.audio.play().catch((e) => {
         //     console.error('Unable to play music!', e)
         // })
-
         const audioCtx = new window.AudioContext()
         const buffer = this.cPlayer.createAudioBuffer(audioCtx)
-
         this.audioBuffer = new BeatBeat(audioCtx, buffer)
 
         this.audioBuffer.load().then(() => {
@@ -54,12 +52,12 @@ export const gameScene = Scene({
         this.objects = [sky, player]
     },
     update() {
-        const {x, y} = getPointer();
-        if (pointerPressed('left') && this.objects !== undefined) {
-            this.objects.push(new Firework({x, y}))
-        }
-
+        // const {x, y} = getPointer();
+        // if (pointerPressed('left') && this.objects !== undefined) {
+        //     this.objects.push(new Firework({x, y}))
+        // }
         this.objects?.forEach((o: object) => (o as GameObject).update());
+        this.objects = this.objects?.filter((o: object) => (o as GameObject).isAlive());
     },
     render() {
         this.objects?.forEach((o: object) => (o as GameObject).render());
@@ -83,23 +81,19 @@ export const gameScene = Scene({
         // const sampleSize = 10000;
         // const data = this.cPlayer.getData(this.audio.currentTime, sampleSize)
         //
+        // console.log(data)
+        //
         // if (this.context) {
         //
-        //     // Plot left channel.
-        //     this.context.beginPath();
-        //     this.context.moveTo(0, 50 + 90 * data[0]);
-        //     for (let k = 0; k < sampleSize; ++k) {
-        //         this.context.lineTo(k, 50 + 90 * data[k * 2]);
+        //     for (let i = 0; i < data.length; i++) {
+        //         // Plot right channel.
+        //         this.context.beginPath();
+        //         this.context.moveTo(0, 150 + 90 * data[i]);
+        //         for (let k = 0; k < sampleSize; ++k) {
+        //             this.context.lineTo(k, 150 + 90 * data[k * 2 + i]);
+        //         }
+        //         this.context.stroke();
         //     }
-        //     this.context.stroke();
-        //
-        //     // Plot right channel.
-        //     this.context.beginPath();
-        //     this.context.moveTo(0, 150 + 90 * data[1]);
-        //     for (let k = 0; k < sampleSize; ++k) {
-        //         this.context.lineTo(k, 150 + 90 * data[k * 2 + 1]);
-        //     }
-        //     this.context.stroke();
         // }
     }
 });
