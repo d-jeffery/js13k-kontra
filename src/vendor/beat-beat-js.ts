@@ -86,7 +86,7 @@ export default class BeatBeat {
                 const time = i === this.songData[c].length - 1
                     ? d.time
                     : this.songData[c][i + 1].time - d.time
-                setTimeout(() => cb(c, time), d.time * 1000)
+                setTimeout(() => cb(c, time, d), d.time * 1000)
             })
         }
     }

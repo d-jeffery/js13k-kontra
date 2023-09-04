@@ -1,4 +1,4 @@
-import {getPointer, init, lerp, Pool, Sprite, SpriteClass} from "kontra";
+import {GameObject, getPointer, init, lerp, Pool, Sprite, SpriteClass} from "kontra";
 const { context } = init()
 
 export class Firework extends SpriteClass {
@@ -8,32 +8,47 @@ export class Firework extends SpriteClass {
         this.width = 20
         this.height = 20
         this.color = 'yellow'
-        this.ttl = 120
         this.pool = Pool({
             // @ts-ignore
             create: Sprite,
-            maxSize: 30
+            maxSize: 10
         });
     }
 
     update(dt?: number) {
         super.update(dt)
 
-        this.pool.get({
-            x: this.x,
-            y: this.y,
-            anchor: {x: 0.5, y: 0.5},
-            width: 10,
-            height: 10,
-            color: 'yellow',
-            ttl: 60,
-            dx: (Math.random() - 0.5) * 2,
-            dy: (Math.random() - 0.5) * 2,
-        });
+        for(let f = 0; f < this.pool.maxSize; f++) {
+
+            const pos = (f / this.pool.maxSize) * 2 * Math.PI
+            const radius = 5
+
+            const settings = {
+                x: this.x,
+                y: this.y,
+                anchor: {x: 0.5, y: 0.5},
+                width: 10,
+                height: 10,
+                radius: 5,
+                color: 'yellow',
+                dx: radius * Math.cos(pos) * 0.5,
+                dy: radius * Math.sin(pos) * 0.5,
+                render: () => {
+                    context.fillStyle = 'yellow'
+                    context.beginPath();
+                    context.arc(0, 0, 5, 0, 2 * Math.PI);
+                    context.fill();
+                }
+            }
+
+            this.pool.get(settings);
+        }
         this.pool.update(dt)
     }
 
     render() {
+        // this.pool.objects.forEach((o: GameObject) => {
+        // })
         this.pool.render()
     }
 
