@@ -18,7 +18,7 @@ export class Firework extends SpriteClass {
     update(dt?: number) {
         super.update(dt)
 
-        for(let f = 0; f < this.pool.maxSize; f++) {
+        for(let f = this.children.length; f < this.pool.maxSize; f++) {
 
             const pos = (f / this.pool.maxSize) * 2 * Math.PI
             const radius = 5
@@ -30,17 +30,20 @@ export class Firework extends SpriteClass {
                 width: 10,
                 height: 10,
                 radius: 5,
-                color: 'yellow',
-                dx: radius * Math.cos(pos) * 0.5,
-                dy: radius * Math.sin(pos) * 0.5,
+                dx: radius * Math.cos(pos) * 0.25,
+                dy: radius * Math.sin(pos) * 0.25,
                 render: () => {
-                    context.fillStyle = 'yellow'
+                    context.fillStyle = 'red'
                     context.beginPath();
                     context.arc(0, 0, 5, 0, 2 * Math.PI);
                     context.fill();
+
+                    context.fillStyle = 'yellow'
+                    context.beginPath();
+                    context.arc(0, 0, 3, 0, 2 * Math.PI);
+                    context.fill();
                 }
             }
-
             this.pool.get(settings);
         }
         this.pool.update(dt)
