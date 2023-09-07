@@ -8,7 +8,8 @@ import {
     Quadtree,
     Scene,
     Sprite,
-    Vector
+    Vector,
+    Text
 } from "kontra";
 import {CPlayer} from "../vendor/player-small";
 import BeatBeat from "../vendor/beat-beat-js";
@@ -26,6 +27,7 @@ export const gameScene = Scene({
     audio: undefined,
     audioBuffer: undefined,
     cullObjects: true,
+    score: 0,
 
     onHide() {
         this.audio.pause()
@@ -69,11 +71,22 @@ export const gameScene = Scene({
         quadtree.add(player, pool.getAliveObjects())
         // @ts-ignore
         const touching = quadtree.get(player).filter((f) => collides(player, f))
-
+        this.score -= touching.length
+        touching.forEach((t) => (t as GameObject).ttl = 0)
     },
     render() {
         this.objects?.forEach((o) => (o as GameObject).render())
         pool.render()
+
+        Text({
+            text: 'Score: ' + this.score,
+            font: '32px Arial',
+            color: 'black',
+            x: 720/2,
+            y: 100,
+            anchor: {x: 0.5, y: 0.5},
+            textAlign: 'center'
+        }).render();
     }
 });
 

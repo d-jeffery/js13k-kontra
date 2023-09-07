@@ -8,7 +8,7 @@ export const player = Sprite({
     // required for a rectangle sprite
     width: 40,
     height: 80,
-    color: 'red',
+    color: 'green',
 
     update() {
         // move the game object normally

@@ -1,4 +1,4 @@
-import {GameObjectClass, on, Vector} from "kontra";
+import {GameObjectClass, lerp, on, Vector} from "kontra";
 import {gameScene} from "../scenes/game";
 import {Firework} from "./firework";
 
@@ -7,6 +7,7 @@ export class Crosshair extends GameObjectClass {
     constructor(properties) {
         super(properties);
         this.position = Vector({x: Math.random() * 720, y:  Math.random() * 1280})
+        this.target = undefined
 
         on("fire", (c: number, time:number, d:number) => {
             if (this.id === c) {
@@ -17,9 +18,16 @@ export class Crosshair extends GameObjectClass {
                     radius: 20,
                     ttl: 120,
                 }))
-                this.position = Vector({x: Math.random() * 720, y:  Math.random() * 1280})
+                this.target = Vector({x: Math.random() * 720, y:  Math.random() * 1280})
             }
         })
+    }
+
+    update(dt?: number) {
+        if (this.target) {
+            this.position.x = lerp(this.position.x, this.target.x, 1 / 30)
+            this.position.y = lerp(this.position.y, this.target.y, 1 / 30)
+        }
     }
 
     draw() {
