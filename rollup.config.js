@@ -32,6 +32,5 @@ export default {
         commonjs({
            defaultIsModuleExports: true
         }),
-        ]
-        //terser(),]
+        terser(),]
 };
