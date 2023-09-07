@@ -12,6 +12,7 @@
     "esModuleInterop": false,
     "outDir": "dist",
     "rootDir": "./",
+    "sourceMap": true
   },
   "include": ["./src/**/*.ts"]
 }

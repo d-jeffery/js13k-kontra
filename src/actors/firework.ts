@@ -1,64 +1,72 @@
-import {GameObject, getPointer, init, lerp, Pool, Sprite, SpriteClass} from "kontra";
-const { context } = init()
+import {GameObjectClass,SpriteClass, Vector, emit} from "kontra";
 
-export class Firework extends SpriteClass {
-    constructor(properties: any) {
+
+/*function getFlame() {
+    return new Flame(...arguments);
+}*/
+
+
+/*
+class Flame extends SpriteClass {
+
+    // @ts-ignore
+    constructor(properties) {
         super(properties);
-        this.anchor = {x: 0.5, y: 0.5}
-        this.width = 20
-        this.height = 20
-        this.color = 'yellow'
-        this.pool = Pool({
-            // @ts-ignore
-            create: Sprite,
-            maxSize: 10
-        });
     }
 
-    update(dt?: number) {
-        super.update(dt)
-
-        for(let f = this.children.length; f < this.pool.maxSize; f++) {
-
-            const pos = (f / this.pool.maxSize) * 2 * Math.PI
-            const radius = 5
-
-            const settings = {
-                x: this.x,
-                y: this.y,
-                anchor: {x: 0.5, y: 0.5},
-                width: 10,
-                height: 10,
-                radius: 5,
-                dx: radius * Math.cos(pos) * 0.25,
-                dy: radius * Math.sin(pos) * 0.25,
-                render: () => {
-                    context.fillStyle = 'red'
-                    context.beginPath();
-                    context.arc(0, 0, 5, 0, 2 * Math.PI);
-                    context.fill();
-
-                    context.fillStyle = 'yellow'
-                    context.beginPath();
-                    context.arc(0, 0, 3, 0, 2 * Math.PI);
-                    context.fill();
-                }
-            }
-            this.pool.get(settings);
-        }
-        this.pool.update(dt)
-    }
-
-    render() {
-        // this.pool.objects.forEach((o: GameObject) => {
-        // })
-        this.pool.render()
+    init(properties: object): void {
+        this.velocity = Vector({
+            x: this.radius * Math.cos(this.pos) * 0.25,
+            y: this.radius * Math.sin(this.pos) * 0.25})
     }
 
     draw() {
-        super.draw()
+        this.context.fillStyle = 'red'
+        this.context.beginPath();
+        this.context.arc(0, 0, this.radius, 0, 2 * Math.PI);
+        this.context.fill();
+
+        this.context.fillStyle = 'yellow'
+        this.context.beginPath();
+        this.context.arc(0, 0, this.radius - 2, 0, 2 * Math.PI);
+        this.context.fill();
+    }
+}*/
+
+export class Firework extends GameObjectClass {
+    // @ts-ignore
+    constructor(properties) {
+        super(properties)
+        this.ttl = 100
+    }
+
+    update(dt?: number) {
+        this.advance()
+
+        if (this.ttl > 0) {
+            emit("explode", this.position)
+            this.ttl = 0;
+        }
     }
 }
+
+
+
+// properties will be passed to the sprites init() function
+
+
+//
+//
+// export class Firework extends GameObjectClass {
+//     init(properties: {x: number, y: number}): void {
+//         console.log("Firework", properties)
+//         this.position = Vector({x: properties.x, y: properties.y})
+//         this.anchor = {x: 0.5, y: 0.5}
+//     }
+// }
+//
+//
+
 /*
 
 export const firework = new Firework({

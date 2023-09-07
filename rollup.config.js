@@ -14,10 +14,14 @@ const closureOptions = {
 export default {
     input: 'src/index.ts',
     output: {
+        sourcemap: true,
         dir: 'dist',
         format: 'cjs',
     },
-    plugins: [typescript(),
+    plugins: [typescript({
+        sourceMap: true,
+        inlineSources: true
+    }),
         // kontra({
         //     gameObject: {
         //         group: true,
@@ -28,5 +32,6 @@ export default {
         commonjs({
            defaultIsModuleExports: true
         }),
-        terser(),]
+        ]
+        //terser(),]
 };
