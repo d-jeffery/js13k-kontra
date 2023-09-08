@@ -1,10 +1,9 @@
 interface SoundData {
-    data: number,
+    data: number
     time: number
 }
 
 export default class BeatBeat {
-
     isPlaying = false
 
     private offlineContext!: OfflineAudioContext
@@ -21,7 +20,7 @@ export default class BeatBeat {
     ) {}
 
     load() {
-        return new Promise<void>(async resolve => {
+        return new Promise<void>(async (resolve) => {
             await this.analyze()
             resolve()
         })
@@ -37,17 +36,21 @@ export default class BeatBeat {
     }
 
     private async analyze() {
-        this.offlineContext = new OfflineAudioContext(this.buffer.numberOfChannels, this.buffer.length, this.buffer.sampleRate)
+        this.offlineContext = new OfflineAudioContext(
+            this.buffer.numberOfChannels,
+            this.buffer.length,
+            this.buffer.sampleRate
+        )
         const source = this.offlineContext.createBufferSource()
         source.buffer = this.buffer
 
         const filter = this.offlineContext.createBiquadFilter()
-        filter.type = "bandpass"
+        filter.type = 'bandpass'
         filter.frequency.value = this.filterFrequency
         filter.Q.value = 1
 
         const filter2 = this.offlineContext.createBiquadFilter()
-        filter2.type = "peaking"
+        filter2.type = 'peaking'
         filter2.frequency.value = this.filterFrequency
         filter2.Q.value = 1
         filter2.gain.value = this.peakGain
@@ -66,12 +69,14 @@ export default class BeatBeat {
                 if (data[i] > this.threshold) {
                     const time = i / buffer.sampleRate
                     const previousTime = this.songData[channel].length
-                        ? this.songData[channel][this.songData[channel].length - 1].time
+                        ? this.songData[channel][
+                              this.songData[channel].length - 1
+                          ].time
                         : 0
                     if (time - previousTime > this.minAnimationTime) {
                         this.songData[channel].push({
                             data: data[i],
-                            time
+                            time,
                         })
                     }
                 }
@@ -81,11 +86,12 @@ export default class BeatBeat {
     }
 
     private animate(cb: any) {
-        for(let c = 0; c < Object.keys(this.songData).length; c++) {
+        for (let c = 0; c < Object.keys(this.songData).length; c++) {
             this.songData[c].forEach((d, i) => {
-                const time = i === this.songData[c].length - 1
-                    ? d.time
-                    : this.songData[c][i + 1].time - d.time
+                const time =
+                    i === this.songData[c].length - 1
+                        ? d.time
+                        : this.songData[c][i + 1].time - d.time
                 setTimeout(() => cb(c, time, d), d.time * 1000)
             })
         }

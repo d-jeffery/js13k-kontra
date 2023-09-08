@@ -9,16 +9,16 @@ import {
     Scene,
     Sprite,
     Vector,
-    Text
-} from "kontra";
-import {CPlayer} from "../vendor/player-small";
-import BeatBeat from "../vendor/beat-beat-js";
-import {player} from "../actors/player";
-import {sky} from "../actors/sky";
-import {gameSong} from "../music";
-import {Crosshair} from "../actors/crosshair";
+    Text,
+} from 'kontra'
+import { CPlayer } from '../vendor/player-small'
+import BeatBeat from '../vendor/beat-beat-js'
+import { player } from '../actors/player'
+import { sky } from '../actors/sky'
+import { gameSong } from '../music'
+import { Crosshair } from '../actors/crosshair'
 
-let { context } = init();
+let { context } = init()
 //declare const testSong: any;
 
 export const gameScene = Scene({
@@ -48,17 +48,17 @@ export const gameScene = Scene({
 
         await this.audioBuffer.load()
 
-        const timing = [...this.audioBuffer.songData];
+        const timing = [...this.audioBuffer.songData]
 
         this.audioBuffer.play((c: number, time: number, d: number) => {
-            emit("fire", c, time, d)
+            emit('fire', c, time, d)
         })
 
         this.add([
             sky,
             player,
-            new Crosshair({id: 0, radius: 20, timing: timing[0]}),
-            new Crosshair({id: 1, radius: 20, timing: timing[1]})
+            new Crosshair({ id: 0, radius: 20, timing: timing[0] }),
+            new Crosshair({ id: 1, radius: 20, timing: timing[1] }),
         ])
     },
     update() {
@@ -66,13 +66,13 @@ export const gameScene = Scene({
         this.objects = this.objects?.filter((o) => (o as GameObject).isAlive())
         this.objects?.forEach((o) => (o as GameObject).update())
 
-        let quadtree = Quadtree();
+        let quadtree = Quadtree()
         // @ts-ignore
         quadtree.add(player, pool.getAliveObjects())
         // @ts-ignore
         const touching = quadtree.get(player).filter((f) => collides(player, f))
         this.score -= touching.length
-        touching.forEach((t) => (t as GameObject).ttl = 0)
+        touching.forEach((t) => ((t as GameObject).ttl = 0))
     },
     render() {
         this.objects?.forEach((o) => (o as GameObject).render())
@@ -82,19 +82,18 @@ export const gameScene = Scene({
             text: 'Score: ' + this.score,
             font: '32px Arial',
             color: 'black',
-            x: 720/2,
+            x: 720 / 2,
             y: 100,
-            anchor: {x: 0.5, y: 0.5},
-            textAlign: 'center'
-        }).render();
-    }
-});
-
+            anchor: { x: 0.5, y: 0.5 },
+            textAlign: 'center',
+        }).render()
+    },
+})
 
 let pool = Pool({
     // @ts-ignore
     create: Sprite,
-});
+})
 
 pool.get({
     x: 0,
@@ -103,16 +102,17 @@ pool.get({
     height: 0,
     color: 'red',
     opacity: 0,
-    ttl: 0
-});
+    ttl: 0,
+})
 
-on("explode", (position: Vector) => {
-    for(let f = 0; f < 10; f++) {
+on('explode', (position: Vector) => {
+    for (let f = 0; f < 10; f++) {
         const pos = (f / 10) * 2 * Math.PI
         const radius = 5
 
         pool.get({
             position,
+            anchor: { x: 0.5, y: 0.5 },
             width: 10,
             height: 10,
             color: 'yellow',
@@ -121,15 +121,15 @@ on("explode", (position: Vector) => {
             dy: radius * Math.sin(pos) * 0.25,
             render: () => {
                 context.fillStyle = 'red'
-                context.beginPath();
-                context.arc(0, 0, 5, 0, 2 * Math.PI);
-                context.fill();
+                context.beginPath()
+                context.arc(0, 0, 5, 0, 2 * Math.PI)
+                context.fill()
 
                 context.fillStyle = 'yellow'
-                context.beginPath();
-                context.arc(0, 0, 3, 0, 2 * Math.PI);
-                context.fill();
-            }
-        });
+                context.beginPath()
+                context.arc(0, 0, 3, 0, 2 * Math.PI)
+                context.fill()
+            },
+        })
     }
 })

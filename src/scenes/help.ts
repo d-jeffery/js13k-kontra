@@ -1,11 +1,11 @@
-import {Button, emit, Grid, init, Scene, Text} from "kontra";
-import {gameScene} from "./game";
+import { Button, emit, Grid, init, Scene, Text } from 'kontra'
+import { gameScene } from './game'
 const { canvas } = init()
 
 export const helpScene = Scene({
     id: 'menu',
 
-    onShow () {
+    onShow() {
         const textOptions = {
             color: 'black',
             font: '32px Arial, sans-serif',
@@ -14,17 +14,17 @@ export const helpScene = Scene({
             },
             onOut: function () {
                 this.color = 'black'
-            }
+            },
         }
 
         const menuTitle = Text({
-            text: 'Eeeeeyyyyy, it\'s a fuck\'n game',
-            ...textOptions
+            text: "Eeeeeyyyyy, it's a fuck'n game",
+            ...textOptions,
         })
 
         const title = Text({
             text: 'ABOUT HISTORY SHIT',
-            ...textOptions
+            ...textOptions,
         })
 
         const startButton = Button({
@@ -33,11 +33,11 @@ export const helpScene = Scene({
                 text: 'Click to Begin!',
                 color: 'red',
                 font: '32px Arial, sans-serif',
-                anchor: {x: 0.5, y: 0.5}
+                anchor: { x: 0.5, y: 0.5 },
             },
             padX: 20,
             padY: 10,
-            anchor: {x: 0.5, y: 0.5},
+            anchor: { x: 0.5, y: 0.5 },
 
             render() {
                 // focused by keyboard
@@ -66,8 +66,8 @@ export const helpScene = Scene({
                 if (this.pressed === true) {
                     emit('changeScene', gameScene)
                 }
-            }
-        });
+            },
+        })
 
         const menu = Grid({
             x: 360,
@@ -80,9 +80,9 @@ export const helpScene = Scene({
             // center the children
             justify: 'center',
 
-            children: [menuTitle, title, startButton]
+            children: [menuTitle, title, startButton],
         })
 
         this.objects = [menu]
-    }
+    },
 })

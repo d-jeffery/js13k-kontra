@@ -1,9 +1,9 @@
 // rollup.config.js
-import typescript from '@rollup/plugin-typescript';
-import commonjs from "@rollup/plugin-commonjs";
+import typescript from '@rollup/plugin-typescript'
+import commonjs from '@rollup/plugin-commonjs'
 import kontra from 'rollup-plugin-kontra'
-import nodeResolve from "@rollup/plugin-node-resolve";
-import terser from "@rollup/plugin-terser";
+import nodeResolve from '@rollup/plugin-node-resolve'
+import terser from '@rollup/plugin-terser'
 
 const closureOptions = {
     compilationLevel: 'ADVANCED',
@@ -18,10 +18,11 @@ export default {
         dir: 'dist',
         format: 'cjs',
     },
-    plugins: [typescript({
-        sourceMap: true,
-        inlineSources: true
-    }),
+    plugins: [
+        typescript({
+            sourceMap: true,
+            inlineSources: true,
+        }),
         // kontra({
         //     gameObject: {
         //         group: true,
@@ -30,7 +31,8 @@ export default {
         // }),
         nodeResolve(),
         commonjs({
-           defaultIsModuleExports: true
+            defaultIsModuleExports: true,
         }),
-        terser(),]
-};
+        terser(),
+    ],
+}

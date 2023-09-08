@@ -1,10 +1,8 @@
-import {GameObjectClass,SpriteClass, Vector, emit} from "kontra";
-
+import { GameObjectClass, SpriteClass, Vector, emit } from 'kontra'
 
 /*function getFlame() {
     return new Flame(...arguments);
 }*/
-
 
 /*
 class Flame extends SpriteClass {
@@ -44,16 +42,13 @@ export class Firework extends GameObjectClass {
         this.advance()
 
         if (this.ttl > 0) {
-            emit("explode", this.position)
-            this.ttl = 0;
+            emit('explode', this.position)
+            this.ttl = 0
         }
     }
 }
 
-
-
 // properties will be passed to the sprites init() function
-
 
 //
 //
