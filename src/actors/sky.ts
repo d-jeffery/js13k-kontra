@@ -12,19 +12,14 @@ export const sky = Sprite({
     width: context!.canvas.width,
     height: context!.canvas.height,
     color: 'LightSkyBlue',
-    direction: false,
-    offset: 20,
+    count: 0,
 
     init: function (properties: { tempo: number }) {
         setInterval(()=> {
-            this.direction = !this.direction
-            this.offset = 20
-        }, properties.tempo * 10)
+            this.count += 1
+            if (this.count === properties.tempo) this.count = 0
+        }, properties.tempo)
     },
-    update: function() {
-        this.advance()
-        this.offset--
-}   ,
     render: function () {
         this.draw()
 
@@ -33,22 +28,21 @@ export const sky = Sprite({
         }
 
         const radius = 20;
-        let left = this.direction;
+        let left = false;
 
-        for (let h = 0; h < this.height; h += radius * 3 ) {
-            const count = left ? -this.offset : this.offset
-
-            for(let w = -radius; w < this.width + radius; w += radius ) {
+        for (let h = - radius * 6; h < this.height + radius * 6; h += radius * 3 ) {
+            const count = left ? -radius / 2 : radius / 2
+            for(let w = 0; w < this.width; w += radius ) {
                 this.context.strokeStyle = 'white'
                 this.context.lineWidth = 2;
                 this.context.beginPath()
-                this.context.arc(2 * w + count, h+1, radius, 0, Math.PI)
+                this.context.arc(2 * w + count, h+1 + this.count, radius, 0, Math.PI)
                 this.context.stroke()
 
                 this.context.lineWidth = 1;
                 this.context.strokeStyle = 'DeepSkyBlue'
                 this.context.beginPath()
-                this.context.arc(2 * w + count, h, radius, 0, Math.PI)
+                this.context.arc(2 * w + count, h + this.count, radius, 0, Math.PI)
                 this.context.stroke()
             }
             left = !left
