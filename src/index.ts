@@ -3,11 +3,6 @@ import {
     GameLoop,
     Scene,
     on,
-    Pool,
-    Sprite,
-    Vector,
-    init,
-    Quadtree,
 } from 'kontra'
 import { introScene } from './scenes/intro'
 

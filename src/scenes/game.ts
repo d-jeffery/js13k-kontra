@@ -54,6 +54,8 @@ export const gameScene = Scene({
             emit('fire', c, time, d)
         })
 
+        sky.init({tempo: 120})
+
         this.add([
             sky,
             player,

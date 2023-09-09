@@ -14,9 +14,9 @@ export default class BeatBeat {
         private buffer: AudioBuffer,
         private filterFrequency = 100,
         private peakGain = 15,
-        private threshold = 0.1,
+        private threshold = 0.2,
         private sampleSkip = 350,
-        private minAnimationTime = 0.4
+        private minAnimationTime = 0.2
     ) {}
 
     load() {
