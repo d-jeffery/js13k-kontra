@@ -1,4 +1,4 @@
-import { GameObjectClass, SpriteClass, Vector, emit } from 'kontra'
+import { GameObjectClass, emit } from 'kontra'
 
 /*function getFlame() {
     return new Flame(...arguments);

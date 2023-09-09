@@ -45,7 +45,7 @@ export const introScene = Scene({
         const startButton = Button({
             // text properties
             text: {
-                text: 'Click to Begin!',
+                text: 'Click to Set Sail!',
                 color: 'red',
                 font: '32px Arial, sans-serif',
                 anchor: { x: 0.5, y: 0.5 },
@@ -84,7 +84,7 @@ export const introScene = Scene({
             },
         })
 
-        const helpButton = Button({
+        /*const helpButton = Button({
             // text properties
             text: {
                 text: 'Read Help!',
@@ -124,7 +124,7 @@ export const introScene = Scene({
                     emit('changeScene', helpScene)
                 }
             },
-        })
+        })*/
 
         const intro = Grid({
             x: 360,
@@ -142,7 +142,6 @@ export const introScene = Scene({
                 and,
                 mindfieldstudios,
                 startButton,
-                helpButton,
             ],
         })
 
