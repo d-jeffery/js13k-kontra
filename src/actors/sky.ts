@@ -31,18 +31,18 @@ export const sky = Sprite({
         let left = false;
 
         for (let h = - radius * 6; h < this.height + radius * 6; h += radius * 3 ) {
-            const count = left ? -radius / 2 : radius / 2
+            const offset = left ? 0 : radius
             for(let w = 0; w < this.width; w += radius ) {
                 this.context.strokeStyle = 'white'
                 this.context.lineWidth = 2;
                 this.context.beginPath()
-                this.context.arc(2 * w + count, h+1 + this.count, radius, 0, Math.PI)
+                this.context.arc(2 * w + offset, h+1 + this.count, radius, 0, Math.PI)
                 this.context.stroke()
 
                 this.context.lineWidth = 1;
                 this.context.strokeStyle = 'DeepSkyBlue'
                 this.context.beginPath()
-                this.context.arc(2 * w + count, h + this.count, radius, 0, Math.PI)
+                this.context.arc(2 * w + offset, h + this.count, radius, 0, Math.PI)
                 this.context.stroke()
             }
             left = !left
