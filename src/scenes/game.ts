@@ -12,7 +12,7 @@ import {
     Text,
 } from 'kontra'
 import { CPlayer } from '../vendor/player-small'
-import BeatBeat from '../vendor/beat-beat-js'
+import BeatBeat, {SoundData} from '../vendor/beat-beat-js'
 import { player } from '../actors/player'
 import { sky } from '../actors/sky'
 import { gameSong } from '../music'
@@ -107,31 +107,65 @@ pool.get({
     ttl: 0,
 })
 
-on('explode', (position: Vector) => {
-    for (let f = 0; f < 10; f++) {
-        const pos = (f / 10) * 2 * Math.PI
-        const radius = 5
+on('explode', (position: Vector, soundData: SoundData) => {
+
+    let radius: number
+    let color1: string
+    let color2: string
+    let count: number
+    let ttl: number
+    let speed: number
+
+    if (soundData.data < 0.25) {
+        radius = 20
+        color1 = "brown"
+        color2 = "yellow"
+        count = 4
+        ttl = 320
+        speed = 4
+    } else if (soundData.data < 0.5) {
+        radius = 10
+        color1 = "orange"
+        color2 = "yellow"
+        count = 6
+        ttl = 240
+        speed = 7
+    } else {
+        radius = 5
+        color1 = "red"
+        color2 = "yellow"
+        count = 12
+        ttl = 60
+        speed = 12
+    }
+
+    for (let f = 0; f < count; f++) {
+        const pos = (f / count) * 2 * Math.PI
 
         pool.get({
             position,
-            anchor: { x: 0.5, y: 0.5 },
+            anchor: {x: 0.5, y: 0.5},
             width: 10,
             height: 10,
             color: 'yellow',
-            ttl: 240,
-            dx: radius * Math.cos(pos) * 0.25,
-            dy: radius * Math.sin(pos) * 0.25,
+            ttl,
+            dx: speed * Math.cos(pos) * 0.25,
+            dy: speed * Math.sin(pos) * 0.25,
             render: () => {
-                context.fillStyle = 'red'
-                context.beginPath()
-                context.arc(0, 0, 5, 0, 2 * Math.PI)
-                context.fill()
-
-                context.fillStyle = 'yellow'
-                context.beginPath()
-                context.arc(0, 0, 3, 0, 2 * Math.PI)
-                context.fill()
+                renderFireWork(context, color1, color2, radius)
             },
         })
     }
 })
+
+const renderFireWork = (context: CanvasRenderingContext2D, color1: string, color2: string, radius: number) => {
+    context.fillStyle = color1
+    context.beginPath()
+    context.arc(0, 0, radius, 0, 2 * Math.PI)
+    context.fill()
+
+    context.fillStyle = color2
+    context.beginPath()
+    context.arc(0, 0, radius * 0.6, 0, 2 * Math.PI)
+    context.fill()
+}

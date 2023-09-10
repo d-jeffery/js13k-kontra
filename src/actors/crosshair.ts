@@ -21,6 +21,7 @@ export class Crosshair extends GameObjectClass {
                         color: 'yellow',
                         radius: 20,
                         ttl: 120,
+                        data: d,
                     })
                 )
                 this.target = Vector({

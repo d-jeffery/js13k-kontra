@@ -1,4 +1,4 @@
-interface SoundData {
+export interface SoundData {
     data: number
     time: number
 }

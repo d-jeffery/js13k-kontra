@@ -42,7 +42,7 @@ export class Firework extends GameObjectClass {
         this.advance()
 
         if (this.ttl > 0) {
-            emit('explode', this.position)
+            emit('explode', this.position, this.data)
             this.ttl = 0
         }
     }
