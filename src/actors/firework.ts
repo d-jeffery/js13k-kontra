@@ -1,8 +1,8 @@
 import { GameObjectClass, emit } from 'kontra'
 
-/*function getFlame() {
+/* function getFlame() {
     return new Flame(...arguments);
-}*/
+} */
 
 /*
 class Flame extends SpriteClass {
@@ -29,23 +29,23 @@ class Flame extends SpriteClass {
         this.context.arc(0, 0, this.radius - 2, 0, 2 * Math.PI);
         this.context.fill();
     }
-}*/
+} */
 
 export class Firework extends GameObjectClass {
-    // @ts-ignore
-    constructor(properties) {
-        super(properties)
-        this.ttl = 100
-    }
+  // @ts-expect-error
+  constructor (properties) {
+    super(properties)
+    this.ttl = 100
+  }
 
-    update(dt?: number) {
-        this.advance()
+  update (dt?: number) {
+    this.advance()
 
-        if (this.ttl > 0) {
-            emit('explode', this.position, this.data)
-            this.ttl = 0
-        }
+    if (this.ttl > 0) {
+      emit('explode', this.position, this.data)
+      this.ttl = 0
     }
+  }
 }
 
 // properties will be passed to the sprites init() function
@@ -108,4 +108,4 @@ export const firework = new Firework({
     render() {
         pool.render()
     }
-});*/
+}); */
