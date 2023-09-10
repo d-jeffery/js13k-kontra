@@ -142,8 +142,8 @@ on('explode', (position: Vector, soundData: SoundData) => {
     pool.get({
       position,
       anchor: { x: 0.5, y: 0.5 },
-      width: 10,
-      height: 10,
+      width: radius * 2,
+      height: radius * 2,
       color: 'yellow',
       ttl,
       dx: speed * Math.cos(pos + random) * 0.25,
@@ -158,11 +158,11 @@ on('explode', (position: Vector, soundData: SoundData) => {
 const renderFireWork = (context: CanvasRenderingContext2D, color1: string, color2: string, radius: number) => {
   context.fillStyle = color1
   context.beginPath()
-  context.arc(0, 0, radius, 0, 2 * Math.PI)
+  context.arc(radius, radius, radius, 0, 2 * Math.PI)
   context.fill()
 
   context.fillStyle = color2
   context.beginPath()
-  context.arc(0, 0, radius * 0.6, 0, 2 * Math.PI)
+  context.arc(radius, radius, radius * 0.6, 0, 2 * Math.PI)
   context.fill()
 }
