@@ -24,4 +24,5 @@ module.exports = {
         'no-sparse-arrays': 0,
         '@typescript-eslint/consistent-type-imports': 0,
     },
+    ignorePatterns: ['src/vendor/*', 'node_modules', 'src/music.ts']
 }
