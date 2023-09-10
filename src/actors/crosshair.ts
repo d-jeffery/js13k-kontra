@@ -13,9 +13,17 @@ export class Crosshair extends GameObjectClass {
       x: rand() * 720,
       y: rand() * 1280
     })
+    this.flash = true
     this.nextTiming = this.timing.shift()
 
+    setInterval(() => this.flash = !this.flash, 500)
+
     on('fire', (c: number, time: number, d: SoundData) => {
+      if (!this.nextTiming) {
+        this.ttl = 0
+        return
+      }
+
       if (this.id === c && this.nextTiming.time === d.time) {
         this.parent!.add(
           new Firework({
@@ -45,12 +53,12 @@ export class Crosshair extends GameObjectClass {
   }
 
   draw () {
-    drawCrosshair(this.context, 0, 0, this.radius)
+    drawCrosshair(this.context, 0, 0, this.radius, this.flash ? 'red' : 'darkred')
   }
 }
 
-export const drawCrosshair = (context: CanvasRenderingContext2D, x: number, y: number, radius: number) => {
-  context.strokeStyle = 'red'
+export const drawCrosshair = (context: CanvasRenderingContext2D, x: number, y: number, radius: number, color: string = 'red') => {
+  context.strokeStyle = color
   context.lineWidth = 5
   context.beginPath()
   context.arc(x, y, radius, 0, 2 * Math.PI)
