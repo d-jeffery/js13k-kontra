@@ -1,19 +1,21 @@
 import { GameObjectClass, lerp, on, Vector } from 'kontra'
 import { Firework } from './firework'
+import {SoundData} from "../vendor/beat-beat-js";
 
 export class Crosshair extends GameObjectClass {
     // @ts-ignore
     constructor(properties) {
         super(properties)
-
+        this.radius = 20
         this.position = Vector({
             x: Math.random() * 720,
             y: Math.random() * 1280,
         })
         this.target = undefined
+        this.nextTiming = this.timing.shift()
 
-        on('fire', (c: number, time: number, d: number) => {
-            if (this.id === c) {
+        on('fire', (c: number, time: number, d: SoundData) => {
+            if (this.id === c && this.nextTiming.time === d.time) {
                 this.parent!.add(
                     new Firework({
                         position: this.position,
@@ -28,6 +30,7 @@ export class Crosshair extends GameObjectClass {
                     x: Math.random() * 720,
                     y: Math.random() * 1280,
                 })
+                this.nextTiming = this.timing.shift()
             }
         })
     }

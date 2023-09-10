@@ -48,7 +48,7 @@ export const gameScene = Scene({
 
         await this.audioBuffer.load()
 
-        const timing = [...this.audioBuffer.songData]
+        //const timing = [...this.audioBuffer.songData]
 
         this.audioBuffer.play((c: number, time: number, d: number) => {
             emit('fire', c, time, d)
@@ -59,8 +59,10 @@ export const gameScene = Scene({
         this.add([
             sky,
             player,
-            new Crosshair({ id: 0, radius: 20, timing: timing[0] }),
-            new Crosshair({ id: 1, radius: 20, timing: timing[1] }),
+            new Crosshair({ id: 0, timing: this.audioBuffer.songData[0] }),
+            new Crosshair({ id: 0, timing: this.audioBuffer.songData[0] }),
+            new Crosshair({ id: 1, timing: this.audioBuffer.songData[1] }),
+            new Crosshair({ id: 1, timing: this.audioBuffer.songData[1] }),
         ])
     },
     update() {
@@ -108,13 +110,7 @@ pool.get({
 })
 
 on('explode', (position: Vector, soundData: SoundData) => {
-
-    let radius: number
-    let color1: string
-    let color2: string
-    let count: number
-    let ttl: number
-    let speed: number
+    let radius: number, color1: string, color2: string, count: number, ttl: number, speed: number
 
     if (soundData.data < 0.25) {
         radius = 20
