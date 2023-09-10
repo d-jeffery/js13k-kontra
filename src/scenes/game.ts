@@ -138,6 +138,7 @@ on('explode', (position: Vector, soundData: SoundData) => {
         ttl = 60
         speed = 12
     }
+    const random = Math.random() * Math.PI
 
     for (let f = 0; f < count; f++) {
         const pos = (f / count) * 2 * Math.PI
@@ -149,8 +150,8 @@ on('explode', (position: Vector, soundData: SoundData) => {
             height: 10,
             color: 'yellow',
             ttl,
-            dx: speed * Math.cos(pos) * 0.25,
-            dy: speed * Math.sin(pos) * 0.25,
+            dx: speed * Math.cos(pos + random) * 0.25,
+            dy: speed * Math.sin(pos + random) * 0.25,
             render: () => {
                 renderFireWork(context, color1, color2, radius)
             },
