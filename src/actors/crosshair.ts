@@ -2,16 +2,21 @@ import { GameObjectClass, lerp, on, Vector } from 'kontra'
 import { Firework } from './firework'
 import {SoundData} from "../vendor/beat-beat-js";
 
+let seed = 123
+function random() {
+  const x = Math.sin(seed++) * 10000
+  return x - Math.floor(x)
+}
+
 export class Crosshair extends GameObjectClass {
     // @ts-ignore
     constructor(properties) {
         super(properties)
-        this.radius = 20
+        this.radius = 40
         this.position = Vector({
-            x: Math.random() * 720,
-            y: Math.random() * 1280,
+            x: random() * 720,
+            y: random() * 1280,
         })
-        this.target = undefined
         this.nextTiming = this.timing.shift()
 
         on('fire', (c: number, time: number, d: SoundData) => {
@@ -26,40 +31,45 @@ export class Crosshair extends GameObjectClass {
                         data: d,
                     })
                 )
-                this.target = Vector({
-                    x: Math.random() * 720,
-                    y: Math.random() * 1280,
+                this.position = Vector({
+                    x: random() * 720,
+                    y: random() * 1280,
                 })
+                this.radius = 40;
                 this.nextTiming = this.timing.shift()
             }
         })
     }
 
     update(dt?: number) {
-        if (this.target) {
-            this.position.x = lerp(this.position.x, this.target.x, 1 / 30)
-            this.position.y = lerp(this.position.y, this.target.y, 1 / 30)
+        this.advance()
+        if(this.radius > 20) {
+            this.radius -= 1
         }
     }
 
     draw() {
-        this.context.strokeStyle = 'red'
-        this.context.lineWidth = 5
-        this.context.beginPath()
-        this.context.arc(0, 0, this.radius, 0, 2 * Math.PI)
-        this.context.stroke()
-        this.context.closePath()
-
-        this.context.beginPath()
-        this.context.lineTo(0, 30)
-        this.context.lineTo(0, -30)
-        this.context.stroke()
-        this.context.closePath()
-
-        this.context.beginPath()
-        this.context.lineTo(30, 0)
-        this.context.lineTo(-30, 0)
-        this.context.stroke()
-        this.context.closePath()
+        drawCrosshair(this.context, 0, 0, this.radius)
     }
+}
+
+export const drawCrosshair = (context: CanvasRenderingContext2D, x: number, y: number, radius: number) => {
+    context.strokeStyle = 'red'
+    context.lineWidth = 5
+    context.beginPath()
+    context.arc(x, y, radius, 0, 2 * Math.PI)
+    context.stroke()
+    context.closePath()
+
+    context.beginPath()
+    context.lineTo(x, y + 30)
+    context.lineTo(x, y - 30)
+    context.stroke()
+    context.closePath()
+
+    context.beginPath()
+    context.lineTo(x + 30, y)
+    context.lineTo(x - 30, y)
+    context.stroke()
+    context.closePath()
 }

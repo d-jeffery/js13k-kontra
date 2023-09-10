@@ -84,7 +84,7 @@ export const introScene = Scene({
             },
         })
 
-        /*const helpButton = Button({
+        const helpButton = Button({
             // text properties
             text: {
                 text: 'Read Help!',
@@ -124,7 +124,7 @@ export const introScene = Scene({
                     emit('changeScene', helpScene)
                 }
             },
-        })*/
+        })
 
         const intro = Grid({
             x: 360,
@@ -142,6 +142,7 @@ export const introScene = Scene({
                 and,
                 mindfieldstudios,
                 startButton,
+                helpButton
             ],
         })
 
