@@ -19,6 +19,7 @@ on('changeScene', (scene: Scene) => {
 })
 
 const loop = GameLoop({
+  blur: true,
   // create the main game loop
   update: function () {
     // update the game state

@@ -23,7 +23,6 @@ export class Crosshair extends GameObjectClass {
         this.ttl = 0
         return
       }
-
       if (this.id === c && this.nextTiming.time === d.time) {
         this.parent!.add(
           new Firework({

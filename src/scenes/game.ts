@@ -9,7 +9,7 @@ import {
   Scene,
   Sprite,
   Vector,
-  Text
+  Text, setStoreItem, getStoreItem
 } from 'kontra'
 import { CPlayer } from '../vendor/player-small'
 import BeatBeat, { SoundData } from '../vendor/beat-beat-js'
@@ -17,6 +17,7 @@ import { player } from '../actors/player'
 import { sky } from '../actors/sky'
 import { gameSong } from '../music'
 import { Crosshair } from '../actors/crosshair'
+import { endScene } from "./end";
 
 const { context } = init()
 // declare const testSong: any;
@@ -24,15 +25,13 @@ const { context } = init()
 export const gameScene = Scene({
   id: 'game',
   cPlayer: new CPlayer(),
-  audio: undefined,
   audioBuffer: undefined,
   cullObjects: true,
   score: 0,
 
-  onHide () {
-    this.audio.pause()
+  onHide() {
   },
-  async onShow () {
+  async onShow() {
     this.cPlayer.init(gameSong)
 
     let done = false
@@ -66,6 +65,10 @@ export const gameScene = Scene({
     ])
   },
   update () {
+    if (this.audioBuffer.songData[0] === undefined || this.audioBuffer.songData[1] === undefined ) {
+      return
+    }
+
     pool.update()
     this.objects = this.objects?.filter((o) => (o as GameObject).isAlive())
     this.objects?.forEach((o) => { (o as GameObject).update() })
@@ -77,6 +80,16 @@ export const gameScene = Scene({
     const touching = quadtree.get(player).filter((f) => collides(player, f))
     this.score -= touching.length
     touching.forEach((t) => ((t as GameObject).ttl = 0))
+
+    if ((this.audioBuffer.songData[0].length + this.audioBuffer.songData[1].length) === 0) {
+      setTimeout(() => {
+        setStoreItem("score", this.score)
+        const highscore = getStoreItem("highscore") || -Infinity
+        setStoreItem("highscore", Math.max(highscore, this.score))
+
+        emit('changeScene', endScene)
+      }, 8000)
+    }
   },
   render () {
     this.objects?.forEach((o) => { (o as GameObject).render() })
@@ -84,12 +97,12 @@ export const gameScene = Scene({
 
     Text({
       text: 'Score: ' + this.score,
-      font: '32px Arial',
+      font: '48px Arial',
       color: 'black',
-      x: 720 / 2,
-      y: 100,
+      x: 120,
+      y: 1230,
       anchor: { x: 0.5, y: 0.5 },
-      textAlign: 'center'
+      textAlign: 'left'
     }).render()
   }
 })
@@ -114,14 +127,14 @@ on('explode', (position: Vector, soundData: SoundData) => {
 
   if (soundData.data < 0.25) {
     radius = 20
-    color1 = 'brown'
+    color1 = 'red'
     color2 = 'yellow'
     count = 4
     ttl = 320
     speed = 4
   } else if (soundData.data < 0.5) {
     radius = 10
-    color1 = 'orange'
+    color1 = 'red'
     color2 = 'yellow'
     count = 6
     ttl = 240
