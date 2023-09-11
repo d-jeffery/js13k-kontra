@@ -1,5 +1,6 @@
 import {Button, emit, getStoreItem, Grid, init, Scene, Text} from 'kontra'
 import { gameScene } from './game'
+import {sky} from "../actors/sky";
 const { canvas } = init()
 
 export const endScene = Scene({
@@ -8,7 +9,7 @@ export const endScene = Scene({
     onShow () {
         const textOptions = {
             color: 'black',
-            font: '32px Arial, sans-serif',
+            font: '48px Arial, sans-serif',
             onOver: function () {
                 this.color = 'purple'
             },
@@ -18,12 +19,12 @@ export const endScene = Scene({
         }
 
         const endTitle = Text({
-            text: "Your score was :" + getStoreItem("score"),
+            text: "Your score was: " + getStoreItem("score"),
             ...textOptions
         })
 
         const highScore = Text({
-            text: "The high score is :" + getStoreItem("highscore"),
+            text: "The high score is: " + getStoreItem("highscore"),
             ...textOptions
         })
 
@@ -41,6 +42,6 @@ export const endScene = Scene({
             children: [endTitle, highScore]
         })
 
-        this.objects = [end]
+        this.objects = [sky, end]
     }
 })

@@ -1,6 +1,7 @@
 import { Button, emit, Grid, init, Scene, Text, track } from 'kontra'
 import { helpScene } from './help'
 import { gameScene } from './game'
+import {sky} from "../actors/sky";
 const { canvas } = init()
 
 export const introScene = Scene({
@@ -40,6 +41,16 @@ export const introScene = Scene({
         )
       },
       ...textOptions
+    })
+
+    const present = Text({
+      text: 'present',
+      ...textOptions
+    })
+
+    const title = Text({
+      text: 'KITE KAOS!',
+      font: '64px Brush Script MT, cursive',
     })
 
     const startButton = Button({
@@ -87,7 +98,7 @@ export const introScene = Scene({
     const helpButton = Button({
       // text properties
       text: {
-        text: 'Read Help!',
+        text: 'Read Help',
         color: 'red',
         font: '32px Arial, sans-serif',
         anchor: { x: 0.5, y: 0.5 }
@@ -141,12 +152,14 @@ export const introScene = Scene({
         slothlikegames,
         and,
         mindfieldstudios,
+        present,
+        title,
         startButton,
         helpButton
       ]
     })
-
-    this.objects = [intro]
+    sky.init({tempo: 120})
+    this.objects = [sky, intro]
     track(slothlikegames)
     track(mindfieldstudios)
   }

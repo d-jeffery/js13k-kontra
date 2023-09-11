@@ -68,10 +68,27 @@ export const player = Sprite({
   anchor: { x: 0.5, y: 0.5 },
 
   // required for a rectangle sprite
-  width: 40,
+  width: 60,
   height: 80,
   color: 'green',
 
+  render () {
+    this.context!.strokeStyle = 'black'
+    this.context!.fillStyle = 'green'
+    this.context!.lineWidth = 5
+    this.context?.beginPath()
+    this.context?.lineTo(30, 60)
+    this.context?.lineTo(60, 0)
+    this.context?.lineTo(30, -20)
+    this.context?.lineTo(0, 0)
+    this.context?.lineTo(30, 60)
+    this.context?.fill()
+    this.context?.stroke()
+    // this.context?.fillRect(0, 0, 40, 80)
+    this.context?.closePath()
+
+
+  },
   update () {
     // move the game object normally
     this.advance()

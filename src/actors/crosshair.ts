@@ -10,8 +10,8 @@ export class Crosshair extends GameObjectClass {
     super(properties)
     this.radius = 40
     this.position = Vector({
-      x: rand() * 720,
-      y: rand() * (1280 - 96)
+      x: 40 + rand() * (720 - 40),
+      y: 40 + 96 + rand() * (1280 - 96 - 40)
     })
     this.flash = true
     this.nextTiming = this.timing.shift()
@@ -35,8 +35,8 @@ export class Crosshair extends GameObjectClass {
           })
         )
         this.position = Vector({
-          x: rand() * 720,
-          y: rand() * (1280 - 96)
+          x: 40 + rand() * (720 - 40),
+          y: 40 + 96 + rand() * (1280 - 96 - 40)
         })
         this.radius = 40
         this.nextTiming = this.timing.shift()
