@@ -23,7 +23,7 @@ export const endScene = Scene({
         })
 
         const highScore = Text({
-            text: "The highs score is :" + getStoreItem("highscore"),
+            text: "The high score is :" + getStoreItem("highscore"),
             ...textOptions
         })
 

@@ -11,12 +11,12 @@ export class Crosshair extends GameObjectClass {
     this.radius = 40
     this.position = Vector({
       x: rand() * 720,
-      y: rand() * 1280
+      y: rand() * (1280 - 96)
     })
     this.flash = true
     this.nextTiming = this.timing.shift()
 
-    setInterval(() => this.flash = !this.flash, 500)
+    setInterval(() => this.flash = !this.flash, 250)
 
     on('fire', (c: number, time: number, d: SoundData) => {
       if (!this.nextTiming) {
@@ -36,7 +36,7 @@ export class Crosshair extends GameObjectClass {
         )
         this.position = Vector({
           x: rand() * 720,
-          y: rand() * 1280
+          y: rand() * (1280 - 96)
         })
         this.radius = 40
         this.nextTiming = this.timing.shift()
@@ -52,7 +52,7 @@ export class Crosshair extends GameObjectClass {
   }
 
   draw () {
-    drawCrosshair(this.context, 0, 0, this.radius, this.flash ? 'red' : 'darkred')
+    drawCrosshair(this.context, 0, 0, this.radius, this.flash ? 'black' : 'darkred')
   }
 }
 

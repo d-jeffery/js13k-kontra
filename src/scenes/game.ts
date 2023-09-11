@@ -9,7 +9,7 @@ import {
   Scene,
   Sprite,
   Vector,
-  Text, setStoreItem, getStoreItem
+  Text, setStoreItem, getStoreItem, seedRand
 } from 'kontra'
 import { CPlayer } from '../vendor/player-small'
 import BeatBeat, { SoundData } from '../vendor/beat-beat-js'
@@ -21,6 +21,7 @@ import { endScene } from "./end";
 
 const { context } = init()
 // declare const testSong: any;
+let rand = seedRand("kontra")
 
 export const gameScene = Scene({
   id: 'game',
@@ -28,6 +29,8 @@ export const gameScene = Scene({
   audioBuffer: undefined,
   cullObjects: true,
   score: 0,
+  progress: 0,
+  total: 0,
 
   onHide() {
   },
@@ -46,7 +49,7 @@ export const gameScene = Scene({
     this.audioBuffer = new BeatBeat(audioCtx, buffer)
 
     await this.audioBuffer.load()
-
+    this.total = this.audioBuffer.songData[0].length + this.audioBuffer.songData[1].length
     // const timing = [...this.audioBuffer.songData]
 
     this.audioBuffer.play((c: number, time: number, d: number) => {
@@ -68,6 +71,8 @@ export const gameScene = Scene({
     if (this.audioBuffer.songData[0] === undefined || this.audioBuffer.songData[1] === undefined ) {
       return
     }
+
+    this.progress = this.audioBuffer.songData[0].length + this.audioBuffer.songData[1].length
 
     pool.update()
     this.objects = this.objects?.filter((o) => (o as GameObject).isAlive())
@@ -95,13 +100,40 @@ export const gameScene = Scene({
     this.objects?.forEach((o) => { (o as GameObject).render() })
     pool.render()
 
+    this.context?.beginPath()
+    this.context!.lineWidth = 10
+    this.context!.fillStyle = 'gray'
+    this.context?.fillRect(0, 0, 720, 96)
+    this.context?.closePath()
+
+    this.context?.beginPath()
+    this.context!.lineWidth = 10
+    this.context!.fillStyle = 'black'
+    this.context?.fillRect(340, 20, 360, 48)
+    this.context?.closePath()
+
+    this.context?.beginPath()
+    this.context!.lineWidth = 0
+    this.context!.fillStyle = 'red'
+    this.context?.fillRect(350, 30, (1 - (this.progress / this.total)) * 340, 28)
+    this.context?.closePath()
+
+    Text({
+      text: 'Progress',
+      font: '32px Arial',
+      color: 'white',
+      anchor: {x: 0.5, y: 0},
+      x: 520,
+      y: 30,
+      textAlign: 'center'
+    }).render()
+
     Text({
       text: 'Score: ' + this.score,
       font: '48px Arial',
       color: 'black',
-      x: 120,
-      y: 1230,
-      anchor: { x: 0.5, y: 0.5 },
+      x: 20,
+      y: 25,//1220,
       textAlign: 'left'
     }).render()
   }
@@ -147,7 +179,7 @@ on('explode', (position: Vector, soundData: SoundData) => {
     ttl = 60
     speed = 12
   }
-  const random = Math.random() * Math.PI
+  const random = rand() * Math.PI
 
   for (let f = 0; f < count; f++) {
     const pos = (f / count) * 2 * Math.PI

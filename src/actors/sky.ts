@@ -16,7 +16,7 @@ export const sky = Sprite({
 
   init: function (properties: { tempo: number }) {
     setInterval(() => {
-      this.count += 1
+      this.count += 2
       if (this.count === properties.tempo) this.count = 0
     }, properties.tempo)
   },

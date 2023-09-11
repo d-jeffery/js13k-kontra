@@ -105,7 +105,7 @@ export const player = Sprite({
     if (this.x < this.width / 2) {
       this.x = position.x
     }
-    if (this.y < this.height / 2) {
+    if (this.y < this.height / 2 + 96) {
       this.y = position.y
     }
     if (this.x > width - this.width / 2) {
