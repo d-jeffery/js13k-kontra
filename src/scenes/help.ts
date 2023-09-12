@@ -1,6 +1,6 @@
 import { Button, emit, Grid, init, Scene, Text } from 'kontra'
 import { gameScene } from './game'
-const { canvas } = init()
+import {sky} from "../actors/sky";
 
 export const helpScene = Scene({
   id: 'menu',
@@ -9,21 +9,20 @@ export const helpScene = Scene({
     const textOptions = {
       color: 'black',
       font: '32px Arial, sans-serif',
-      onOver: function () {
-        this.color = 'purple'
-      },
-      onOut: function () {
-        this.color = 'black'
-      }
+      textAlign: 'center'
     }
 
     const menuTitle = Text({
-      text: "Eeeeeyyyyy, it's a fuck'n game",
+      text: "You been strapped to a Kite as punishment.\n" +
+          "The local guards are using you for\n" +
+          "target practice!",
       ...textOptions
     })
 
-    const title = Text({
-      text: 'ABOUT HISTORY SHIT',
+    const crosshairs = Text({
+      text: "Avoid the cross-hairs and dodge the debris!\n" +
+          "Use W-A-S-D or the arrow keys to move.\n" +
+          "The lower your score, the better you've done!",
       ...textOptions
     })
 
@@ -46,19 +45,19 @@ export const helpScene = Scene({
         }
 
         this.context.lineWidth = 3
-        this.context.strokeStyle = 'red'
+        this.context.strokeStyle = 'black'
+        this.context.fillStyle = 'red'
+        this.textNode.color = 'white'
 
         if (this.pressed === true) {
-          this.context.strokeStyle = 'purple'
-          this.textNode.color = 'purple'
+          this.context.fillStyle = 'purple'
+          this.textNode.color = 'white'
         } else if (this.hovered === true) {
-          this.textNode.color = 'red'
-          canvas.style.cursor = 'pointer'
-        } else {
-          this.textNode.color = 'red'
-          canvas.style.cursor = 'initial'
+          this.context.fillStyle = 'purple'
         }
 
+        // @ts-expect-error width and height can be calculated
+        this.context.fillRect(0, 0, this.width, this.height)
         // @ts-expect-error width and height can be calculated
         this.context.strokeRect(0, 0, this.width, this.height)
       },
@@ -80,9 +79,9 @@ export const helpScene = Scene({
       // center the children
       justify: 'center',
 
-      children: [menuTitle, title, startButton]
+      children: [menuTitle, crosshairs, startButton]
     })
 
-    this.objects = [menu]
+    this.objects = [sky, menu]
   }
 })

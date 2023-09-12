@@ -66,25 +66,23 @@ export const introScene = Scene({
       anchor: { x: 0.5, y: 0.5 },
 
       render () {
-        // focused by keyboard
         if (this.context == null) {
           throw new Error('Missing context.')
         }
 
         this.context.lineWidth = 3
-        this.context.strokeStyle = 'red'
+        this.context.strokeStyle = 'black'
+        this.context.fillStyle = 'red'
+        this.textNode.color = 'white'
 
         if (this.pressed === true) {
-          this.context.strokeStyle = 'purple'
-          this.textNode.color = 'purple'
+          this.context.fillStyle = 'purple'
         } else if (this.hovered === true) {
-          this.textNode.color = 'red'
-          canvas.style.cursor = 'pointer'
-        } else {
-          this.textNode.color = 'red'
-          canvas.style.cursor = 'initial'
+          this.context.fillStyle = 'purple'
         }
 
+        // @ts-expect-error width and height can be calculated
+        this.context.fillRect(0, 0, this.width, this.height)
         // @ts-expect-error width and height can be calculated
         this.context.strokeRect(0, 0, this.width, this.height)
       },
@@ -114,19 +112,18 @@ export const introScene = Scene({
         }
 
         this.context.lineWidth = 3
-        this.context.strokeStyle = 'red'
+        this.context.strokeStyle = 'black'
+        this.context.fillStyle = 'red'
+        this.textNode.color = 'white'
 
         if (this.pressed === true) {
-          this.context.strokeStyle = 'purple'
-          this.textNode.color = 'purple'
+          this.context.fillStyle = 'purple'
         } else if (this.hovered === true) {
-          this.textNode.color = 'red'
-          canvas.style.cursor = 'pointer'
-        } else {
-          this.textNode.color = 'red'
-          canvas.style.cursor = 'initial'
+          this.context.fillStyle = 'purple'
         }
 
+        // @ts-expect-error width and height can be calculated
+        this.context.fillRect(0, 0, this.width, this.height)
         // @ts-expect-error width and height can be calculated
         this.context.strokeRect(0, 0, this.width, this.height)
       },

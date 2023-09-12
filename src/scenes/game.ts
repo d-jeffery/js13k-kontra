@@ -35,6 +35,8 @@ export const gameScene = Scene({
   onHide() {
   },
   async onShow() {
+    this.add([sky])
+
     this.cPlayer.init(gameSong)
 
     let done = false
@@ -56,10 +58,7 @@ export const gameScene = Scene({
       emit('fire', c, time, d)
     })
 
-    sky.init({ tempo: 120 })
-
     this.add([
-      sky,
       player,
       new Crosshair({ id: 0, timing: this.audioBuffer.songData[0] }),
       new Crosshair({ id: 0, timing: this.audioBuffer.songData[0] }),
