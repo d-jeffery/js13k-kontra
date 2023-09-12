@@ -77,11 +77,11 @@ export const player = Sprite({
     this.context!.fillStyle = 'green'
     this.context!.lineWidth = 5
     this.context?.beginPath()
-    this.context?.lineTo(30, 60)
-    this.context?.lineTo(60, 0)
-    this.context?.lineTo(30, -20)
-    this.context?.lineTo(0, 0)
-    this.context?.lineTo(30, 60)
+    this.context?.lineTo(30, 0)
+    this.context?.lineTo(60, 30)
+    this.context?.lineTo(30, 80)
+    this.context?.lineTo(0, 30)
+    this.context?.lineTo(30, 0)
     this.context?.fill()
     this.context?.stroke()
     // this.context?.fillRect(0, 0, 40, 80)
