@@ -170,7 +170,7 @@ export const gameScene = Scene({
     }).render()
 
     Text({
-      text: 'Score: ' + this.score,
+      text: 'Hits: ' + this.score,
       font: '48px Arial',
       color: 'black',
       x: 360,

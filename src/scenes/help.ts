@@ -33,7 +33,8 @@ export const helpScene = Scene({
     })
 
     const score = Text({
-      text: "The lower your score, the better you've done!\n",
+      text: "The lower the number of hits,\n" +
+          "the better you've done!\n",
       ...textOptions
     })
 
