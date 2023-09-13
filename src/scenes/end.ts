@@ -24,7 +24,7 @@ export const endScene = Scene({
         })
 
         const highScore = Text({
-            text: "The high score is: " + getStoreItem("highscore"),
+            text: "Your best score is: " + getStoreItem("highscore"),
             ...textOptions
         })
 

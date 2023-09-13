@@ -13,16 +13,27 @@ export const helpScene = Scene({
     }
 
     const menuTitle = Text({
-      text: "You been strapped to a Kite as punishment.\n" +
-          "The local guards are using you for\n" +
-          "target practice!",
+      text: "You have been strapped to a kite as punishment.\n\n" +
+          "The local guards are using you for target\n" +
+          "practice with their newly acquired rockets!",
       ...textOptions
     })
 
     const crosshairs = Text({
-      text: "Avoid the cross-hairs and dodge the debris!\n" +
+      text: "Avoid the cross-hairs and dodge the debris!\n\n",
+      ...textOptions
+    })
+
+    const controls = Text({
+      text: "Controls:\n" +
           "Use W-A-S-D or the arrow keys to move.\n" +
-          "The lower your score, the better you've done!",
+          "Press the Space Bar to soar.\n" +
+          "upwards and escape from harm\n\n",
+      ...textOptions
+    })
+
+    const score = Text({
+      text: "The lower your score, the better you've done!\n",
       ...textOptions
     })
 
@@ -79,7 +90,7 @@ export const helpScene = Scene({
       // center the children
       justify: 'center',
 
-      children: [menuTitle, crosshairs, startButton]
+      children: [menuTitle, crosshairs, controls,score, startButton]
     })
 
     this.objects = [sky, menu]

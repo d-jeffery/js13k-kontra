@@ -106,15 +106,15 @@ export const gameScene = Scene({
       quadtree.add(player, pool.getAliveObjects())
       // @ts-expect-error
       const touching = quadtree.get(player).filter((f) => collides(player, f))
-      this.score -= touching.length
+      this.score += touching.length
       touching.forEach((t) => ((t as GameObject).ttl = 0))
     }
 
     if ((this.audioBuffer.songData[0].length + this.audioBuffer.songData[1].length) === 0) {
       setTimeout(() => {
         setStoreItem("score", this.score)
-        const highscore = getStoreItem("highscore") || -Infinity
-        setStoreItem("highscore", Math.max(highscore, this.score))
+        const highscore = getStoreItem("highscore") || Infinity
+        setStoreItem("highscore", Math.min(highscore, this.score))
 
         emit('changeScene', endScene)
       }, 8000)

@@ -44,19 +44,19 @@ export const introScene = Scene({
     })
 
     const present = Text({
-      text: 'present',
+      text: 'present\n',
       ...textOptions
     })
 
     const title = Text({
-      text: 'KITE KAOS!',
+      text: 'KITE KAOS!\n',
       font: '64px Brush Script MT, cursive',
     })
 
     const startButton = Button({
       // text properties
       text: {
-        text: 'Click to Set Sail!',
+        text: 'Click to Begin!',
         color: 'red',
         font: '32px Arial, sans-serif',
         anchor: { x: 0.5, y: 0.5 }
