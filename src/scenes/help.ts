@@ -27,7 +27,7 @@ export const helpScene = Scene({
     const controls = Text({
       text: "Controls:\n" +
           "Use W-A-S-D or the arrow keys to move.\n" +
-          "Press the Space Bar to soar.\n" +
+          "Press the Space Bar to soar\n" +
           "upwards and escape from harm\n\n",
       ...textOptions
     })
