@@ -9,7 +9,7 @@ import {
   Scene,
   Sprite,
   Vector,
-  Text, setStoreItem, getStoreItem, seedRand
+  Text, setStoreItem, getStoreItem, seedRand, onKey, initKeys
 } from 'kontra'
 import { CPlayer } from '../vendor/player-small'
 import BeatBeat, { SoundData } from '../vendor/beat-beat-js'
@@ -20,6 +20,9 @@ import { Crosshair } from '../actors/crosshair'
 import { endScene } from "./end";
 
 const { context } = init()
+
+initKeys();
+
 // declare const testSong: any;
 let rand = seedRand("kontra")
 
@@ -31,12 +34,23 @@ export const gameScene = Scene({
   score: 0,
   progress: 0,
   total: 0,
-
+  escapes: 3,
+  sortFunction: (object1: object, object2: object): number => {
+    if (object1 === player && player.escaping) {
+      return 1
+    } else if (object2 === player && player.escaping) {
+      return -1
+    } else if (object1 === player && !player.escaping) {
+      return -1
+    } else if (object2 === player && !player.escaping) {
+      return 1
+    } else {
+      return 0
+    }
+  },
   onHide() {
   },
   async onShow() {
-    this.add([sky])
-
     this.cPlayer.init(gameSong)
 
     let done = false
@@ -63,10 +77,19 @@ export const gameScene = Scene({
       new Crosshair({ id: 0, timing: this.audioBuffer.songData[0] }),
       new Crosshair({ id: 0, timing: this.audioBuffer.songData[0] }),
       new Crosshair({ id: 1, timing: this.audioBuffer.songData[1] }),
-      new Crosshair({ id: 1, timing: this.audioBuffer.songData[1] })
+      new Crosshair({ id: 1, timing: this.audioBuffer.songData[1] }),
     ])
+
+    onKey('space', (e) => {
+      if (this.escapes === 0 || player.escaping) return
+      this.escapes -= 1
+      player.escaping = true
+      setTimeout(()=> player.escaping = false, 3000)
+    });
+
   },
   update () {
+    sky.update()
     if (this.audioBuffer.songData[0] === undefined || this.audioBuffer.songData[1] === undefined ) {
       return
     }
@@ -77,13 +100,15 @@ export const gameScene = Scene({
     this.objects = this.objects?.filter((o) => (o as GameObject).isAlive())
     this.objects?.forEach((o) => { (o as GameObject).update() })
 
-    const quadtree = Quadtree()
-    // @ts-expect-error
-    quadtree.add(player, pool.getAliveObjects())
-    // @ts-expect-error
-    const touching = quadtree.get(player).filter((f) => collides(player, f))
-    this.score -= touching.length
-    touching.forEach((t) => ((t as GameObject).ttl = 0))
+    if (!player.escaping) {
+      const quadtree = Quadtree()
+      // @ts-expect-error
+      quadtree.add(player, pool.getAliveObjects())
+      // @ts-expect-error
+      const touching = quadtree.get(player).filter((f) => collides(player, f))
+      this.score -= touching.length
+      touching.forEach((t) => ((t as GameObject).ttl = 0))
+    }
 
     if ((this.audioBuffer.songData[0].length + this.audioBuffer.songData[1].length) === 0) {
       setTimeout(() => {
@@ -96,13 +121,21 @@ export const gameScene = Scene({
     }
   },
   render () {
-    this.objects?.forEach((o) => { (o as GameObject).render() })
+    sky.render()
     pool.render()
+    this.objects?.sort(this.sortFunction)
+    this.objects?.forEach((o) => { (o as GameObject).render() })
 
     this.context?.beginPath()
     this.context!.lineWidth = 10
     this.context!.fillStyle = 'gray'
     this.context?.fillRect(0, 0, 720, 96)
+    this.context?.closePath()
+
+    this.context?.beginPath()
+    this.context!.lineWidth = 10
+    this.context!.fillStyle = 'gray'
+    this.context?.fillRect(0, 1184, 720, 1280)
     this.context?.closePath()
 
     this.context?.beginPath()
@@ -128,19 +161,30 @@ export const gameScene = Scene({
     }).render()
 
     Text({
-      text: 'Score: ' + this.score,
+      text: 'Escapes: ' + this.escapes,
       font: '48px Arial',
       color: 'black',
       x: 20,
       y: 25,//1220,
       textAlign: 'left'
     }).render()
+
+    Text({
+      text: 'Score: ' + this.score,
+      font: '48px Arial',
+      color: 'black',
+      x: 360,
+      y: 1220,
+      anchor: {x: 0.5, y: 0},
+      textAlign: 'center'
+    }).render()
   }
 })
 
 const pool = Pool({
   // @ts-expect-error
-  create: Sprite
+  create: Sprite,
+  isAlive: () => true
 })
 
 pool.get({

@@ -1,8 +1,6 @@
-import {GameObjectClass, lerp, on, seedRand, Vector} from 'kontra'
+import {GameObjectClass, lerp, on, randInt, seedRand, Vector} from 'kontra'
 import { Firework } from './firework'
 import { SoundData } from '../vendor/beat-beat-js'
-
-let rand = seedRand("kontra")
 
 export class Crosshair extends GameObjectClass {
   // @ts-expect-error
@@ -10,8 +8,8 @@ export class Crosshair extends GameObjectClass {
     super(properties)
     this.radius = 40
     this.position = Vector({
-      x: 40 + rand() * (720 - 40),
-      y: 40 + 96 + rand() * (1280 - 96 - 40)
+      x: randInt(40, 680),
+      y: randInt(136, 1144)
     })
     this.flash = true
     this.nextTiming = this.timing.shift()
@@ -35,8 +33,8 @@ export class Crosshair extends GameObjectClass {
           })
         )
         this.position = Vector({
-          x: 40 + rand() * (720 - 40),
-          y: 40 + 96 + rand() * (1280 - 96 - 40)
+          x: randInt(40, 680),
+          y: randInt(136, 1144)
         })
         this.radius = 40
         this.nextTiming = this.timing.shift()

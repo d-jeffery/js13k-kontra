@@ -7,7 +7,7 @@ import {
   initGesture,
   gestureMap,
   onGesture,
-  initPointer
+  initPointer, onKey, lerp
 } from 'kontra'
 
 initKeys()
@@ -71,6 +71,7 @@ export const player = Sprite({
   width: 60,
   height: 80,
   color: 'green',
+  escaping: false,
 
   render () {
     this.context!.strokeStyle = 'black'
@@ -86,8 +87,6 @@ export const player = Sprite({
     this.context?.stroke()
     // this.context?.fillRect(0, 0, 40, 80)
     this.context?.closePath()
-
-
   },
   update () {
     // move the game object normally
@@ -99,6 +98,14 @@ export const player = Sprite({
             this.height === undefined
     ) {
       throw new Error('Missing location data')
+    }
+
+    if (this.escaping) {
+      // @ts-ignore
+      this.setScale((lerp(this.scaleX,3, 0.1)), (lerp(this.scaleY,3, 0.1)))
+    } else {
+      // @ts-ignore
+      this.setScale((lerp(this.scaleX,1, 0.1)), (lerp(this.scaleY,1, 0.1)))
     }
 
     const position = { x: this.x, y: this.y }
