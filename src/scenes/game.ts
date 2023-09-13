@@ -34,7 +34,7 @@ export const gameScene = Scene({
   score: 0,
   progress: 0,
   total: 0,
-  escapes: 3,
+  escapes: 5,
   sortFunction: (object1: object, object2: object): number => {
     if (object1 === player && player.escaping) {
       return 1
