@@ -20,7 +20,7 @@ export const introScene = Scene({
     }
 
     const slothlikegames = Text({
-      text: 'SLOTH-LIKE GAMES',
+      text: 'SLOTH-LIKE MAN',
       onDown: function () {
         window.open('https://slothlikeman.itch.io/', '_blank')
       },
@@ -28,15 +28,15 @@ export const introScene = Scene({
     })
 
     const and = Text({
-      text: 'and',
+      text: 'with',
       ...textOptions
     })
 
     const mindfieldstudios = Text({
-      text: 'MindField Studios',
+      text: 'Music by Raindrop',
       onDown: function () {
         window.open(
-          'https://www.instagram.com/mindfieldstudios',
+          'https://spotify.link/8JDINBv12Cb',
           '_blank'
         )
       },
