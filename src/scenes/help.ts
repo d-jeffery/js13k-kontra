@@ -12,10 +12,16 @@ export const helpScene = Scene({
       textAlign: 'center'
     }
 
+    const history = Text({
+      text: "By the 13th century, the Taoist monks had made\n" +
+          "man-carrying kites into a common technology.\n",
+      ...textOptions
+    })
+
     const menuTitle = Text({
       text: "You have been strapped to a kite as punishment.\n\n" +
           "The local guards are using you for target\n" +
-          "practice with their newly acquired rockets!",
+          "practice with their newly invented rockets!",
       ...textOptions
     })
 
@@ -91,7 +97,7 @@ export const helpScene = Scene({
       // center the children
       justify: 'center',
 
-      children: [menuTitle, crosshairs, controls,score, startButton]
+      children: [history, menuTitle, crosshairs, controls,score, startButton]
     })
 
     this.objects = [sky, menu]

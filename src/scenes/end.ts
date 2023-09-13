@@ -19,12 +19,12 @@ export const endScene = Scene({
         }
 
         const endTitle = Text({
-            text: "Your score was: " + getStoreItem("score"),
+            text: "You were hit " + getStoreItem("score") + " times",
             ...textOptions
         })
 
         const highScore = Text({
-            text: "Your best score is: " + getStoreItem("highscore"),
+            text: "The best score is: " + getStoreItem("highscore"),
             ...textOptions
         })
 
